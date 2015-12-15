@@ -1,0 +1,137 @@
+h1 {
+  font-family: 'Lato', sans-serif;
+  font-size: 3.3em;
+}
+
+body {
+  background-color: white;
+}
+body .container {
+  padding: 50px 0;
+}
+
+#sign {
+  color: #eee;
+  padding: 30px 20px;
+  background-color: #313945;
+}
+#sign .modal-content {
+  box-shadow: none;
+  background-color: transparent;
+  border: none;
+}
+#sign a:link, #sign a:visited {
+  color: #2dbd90;
+}
+#sign .nav-tabs {
+  border-bottom-color: rgba(255, 255, 255, 0.2);
+}
+#sign .nav-tabs li {
+  width: 50%;
+  text-align: center;
+  font-weight: 900;
+  font-size: 2rem;
+  font-family: Lato, sans-serif;
+}
+#sign .nav-tabs li a:hover {
+  background-color: rgba(0, 0, 0, 0.15);
+  border-color: transparent;
+}
+#sign .nav-tabs li.active a, #sign .nav-tabs li.active a:hover {
+  background-color: #313945;
+  color: #eee;
+  border-color: rgba(255, 255, 255, 0.2);
+  border-bottom-color: #313945;
+}
+#sign .tab-content {
+  position: relative;
+  perspective: 100%;
+  perspective-origin: 50% 50%;
+  background-color: red;
+}
+#sign .tab-content:after {
+  content: '';
+  display: table;
+  clear: both;
+}
+#sign .tab-content .tab-pane {
+  padding: 30px 0;
+  display: block !important;
+  position: absolute;
+  width: 100%;
+  transform-style: preserve-3d;
+  transform: scale(0.8) rotateY(0);
+  transition: all 0.5s cubic-bezier(0.5, 0.2, 0, 1);
+  opacity: 0;
+}
+#sign .tab-content .tab-pane:nth-child(1) {
+  transform: rotateY(-90deg) translateZ(200px);
+}
+#sign .tab-content .tab-pane:nth-child(1).active {
+  transform: rotateY(0deg) translateZ(200px);
+  opacity: 1;
+}
+#sign .tab-content .tab-pane:nth-child(2) {
+  transform: rotateY(90deg) translateZ(200px);
+}
+#sign .tab-content .tab-pane:nth-child(2).active {
+  transform: rotateY(0) translateZ(200px);
+  opacity: 1;
+}
+#sign .tab-content .tab-pane .btn {
+  font-family: Lato, sans-serif;
+  font-weight: 900;
+  margin-bottom: 10px;
+}
+#sign .tab-content .tab-pane .btn .fa {
+  margin-right: 15px;
+}
+#sign .tab-content .tab-pane .btn.btn-facebook {
+  background-color: #3b5998;
+  color: white;
+}
+#sign .tab-content .tab-pane .btn.btn-facebook:hover {
+  background-color: #466bb7;
+}
+#sign .tab-content .tab-pane .btn.btn-linkedin {
+  background-color: #4875B4;
+  color: white;
+}
+#sign .tab-content .tab-pane .btn.btn-linkedin:hover {
+  background-color: #5f86bc;
+}
+#sign .tab-content .tab-pane .btn.btn-default {
+  background-color: #313945;
+  color: #eee;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+#sign .tab-content .tab-pane .btn.btn-default:hover {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+#sign .tab-content .tab-pane form#signupform {
+  display: none;
+}
+#sign .tab-content .tab-pane form#loginform {
+  display: block;
+}
+#sign .tab-content .tab-pane form input.form-control {
+  background-color: transparent;
+  border-radius: 0;
+  border-color: transparent transparent rgba(255, 255, 255, 0.2) transparent;
+  box-shadow: none;
+  text-align: center;
+  color: #2dbd90;
+}
+#sign .tab-content .tab-pane form input.form-control:nth-last-child(1) {
+  margin-bottom: 20px;
+}
+#sign .tab-content .tab-pane p {
+  margin-bottom: 20px;
+}
+#sign .tab-content .tab-pane p.lostpassword {
+  margin-top: 10px;
+}
+#sign .tab-content .tab-pane p .fa {
+  margin-right: 5px;
+  color: #888;
+}

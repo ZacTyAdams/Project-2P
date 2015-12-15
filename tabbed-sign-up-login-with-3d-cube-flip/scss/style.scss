@@ -1,0 +1,145 @@
+$pri-color: #2dbd90;
+$sec-color: #313945;
+h1 {
+  font-family: 'Lato', sans-serif;
+  font-size: 3.3em;
+}
+body {
+  background-color: white;
+  .container {
+    padding: 50px 0;
+  }
+}
+#sign {
+  color: #eee;
+  padding: 30px 20px;
+  background-color: $sec-color;
+  .modal-content {
+    box-shadow: none;
+    background-color: transparent;
+    border: none;
+  }
+  a {
+    &:link, &:visited {
+      color: $pri-color;
+    }
+  }
+  .nav-tabs {
+    border-bottom-color: rgba(255,255,255,.2);
+    li {
+      width: 50%;
+      text-align: center;
+      font-weight: 900;
+      font-size: 2rem;
+      font-family: Lato, sans-serif; 
+      a {
+        &:hover {
+          background-color: rgba(0,0,0,.15);
+          border-color: transparent;
+        }
+      }
+      &.active {
+        a, a:hover {
+          background-color: $sec-color;
+          color: #eee;
+          border-color: rgba(255,255,255,.2);
+          border-bottom-color: $sec-color;
+        }
+      }
+    }
+  }
+  .tab-content {
+    position: relative;
+    perspective: 100%;
+    perspective-origin: 50% 50%;
+    background-color: red;
+    &:after {
+      content: '';
+      display: table;
+      clear: both;
+    }
+    .tab-pane {
+      padding: 30px 0;
+      display: block !important;
+      position: absolute;
+      width: 100%;
+      transform-style: preserve-3d;
+      transform: scale(0.8) rotateY(0);
+      transition: all 0.5s cubic-bezier(0.5, 0.2, 0, 1);
+      opacity: 0;
+      &:nth-child(1) {
+        transform: rotateY(-90deg) translateZ(200px);
+        &.active {
+          transform: rotateY(0deg) translateZ(200px);
+          opacity: 1;
+        }
+      }
+      &:nth-child(2) {
+        transform: rotateY(90deg) translateZ(200px);
+        &.active {
+          transform: rotateY(0) translateZ(200px);
+          opacity: 1;
+        }
+      }
+      .btn {
+        font-family: Lato, sans-serif;
+        font-weight: 900;
+        margin-bottom: 10px;
+        .fa {
+          margin-right: 15px;
+        }
+        &.btn-facebook {
+          background-color: #3b5998;
+          color: white;
+          &:hover {
+            background-color: #466bb7;
+          }
+        }
+        &.btn-linkedin {
+          background-color: #4875B4;
+          color: white;
+          &:hover {
+            background-color: #5f86bc;
+          }
+        }
+        &.btn-default {
+          background-color: $sec-color;
+          color: #eee;
+          border-color: rgba(255,255,255,.2);
+          &:hover {
+            background-color: rgba(0,0,0,.2);
+          }
+        }
+      }
+      form {
+        &#signupform {
+          display: none;
+        }
+        &#loginform {
+          display: block;
+        }
+        input.form-control {
+          background-color: transparent;
+          border-radius: 0;
+          border-color: transparent transparent rgba(255,255,255,.2) transparent;
+          box-shadow: none;
+          text-align: center;
+          color: $pri-color;
+          &:nth-last-child(1) {
+            margin-bottom: 20px;
+          }
+        }
+      }
+      p {
+        margin-bottom: 20px;
+        &.lostpassword {
+          margin-top: 10px;
+        }
+        .fa {
+          margin-right: 5px;
+          color: #888;
+        }
+      }
+    }
+  }
+}
