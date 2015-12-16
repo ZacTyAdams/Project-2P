@@ -1,9 +1,15 @@
 function Login(){
-	var TestObject = Parse.Object.extend("TestObject");
-	var testObject = new TestObject();
-	testObject.save({foo: "bar"}).then(function(object) {
-	  alert("yay! it worked");
-	});
+	var username = document.getElementById("Lemail").value;
+	var password = document.getElementById("Lpassword").value;
+	Parse.User.logIn(username, password, {
+		success: function(user){
+			console.log("login success!");
+		},
+		error: function(user, error){
+			console.log("login failed... " + error.code + " " + error.message);
+		}
+	})
+
 }
 
 function signUp(){
