@@ -4,6 +4,7 @@ function Login(){
 	Parse.User.logIn(username, password, {
 		success: function(user){
 			console.log("login success!");
+			window.location.href = "ui.html";
 		},
 		error: function(user, error){
 			console.log("login failed... " + error.code + " " + error.message);
