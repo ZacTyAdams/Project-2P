@@ -53,12 +53,17 @@ function loader(){ //pulling saved user data into userpane
 	if(Parse.User.current().get("bio") != undefined){
 		document.getElementById("userbio").innerHTML = Parse.User.current().get("bio");
 	}
+	if(Parse.User.current().get("profilePic") != undefined){
+		document.getElementById('blah').src = Parse.User.current().get("profilePic"); 
+		console.log("pulling pic");
+	}
 
 }
 
 function save(){
 	Parse.initialize("aCJKTtGB1GBe7BigaQuTiim9H7o3Gg6NAQrFu9xH", "B7ZpMdjyn7EhwyqGqovr7Wr2KzV2HtlhG7Te5YjJ");
 	
+	Parse.User.current().set("profilePic", document.getElementById("blah").src);
 	Parse.User.current().set("bio", document.getElementById("userbio").innerHTML);
 	Parse.User.current().set("firstname", Parse.User.current().get("firstname"));
 	Parse.User.current().set("lastname", Parse.User.current().get("lastname"));
