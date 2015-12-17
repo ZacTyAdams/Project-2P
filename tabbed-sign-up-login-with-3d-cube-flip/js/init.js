@@ -1,4 +1,6 @@
 function Login(){
+	Parse.initialize("aCJKTtGB1GBe7BigaQuTiim9H7o3Gg6NAQrFu9xH", "B7ZpMdjyn7EhwyqGqovr7Wr2KzV2HtlhG7Te5YjJ");
+
 	var username = document.getElementById("Lemail").value;
 	var password = document.getElementById("Lpassword").value;
 	Parse.User.logIn(username, password, {
@@ -9,11 +11,13 @@ function Login(){
 		error: function(user, error){
 			console.log("login failed... " + error.code + " " + error.message);
 		}
-	})
+	});
 
 }
 
 function signUp(){
+	Parse.initialize("aCJKTtGB1GBe7BigaQuTiim9H7o3Gg6NAQrFu9xH", "B7ZpMdjyn7EhwyqGqovr7Wr2KzV2HtlhG7Te5YjJ");
+
 	var user = new Parse.User();
 	var firstname = document.getElementById("fname").value;
 	var lastname = document.getElementById("lname").value;
@@ -36,11 +40,42 @@ function signUp(){
 }
 
 function tester(){
+	Parse.initialize("aCJKTtGB1GBe7BigaQuTiim9H7o3Gg6NAQrFu9xH", "B7ZpMdjyn7EhwyqGqovr7Wr2KzV2HtlhG7Te5YjJ");
+
 	console.log(Parse.User.current().get("firstname"));
 }
 
 function loader(){ //pulling saved user data into userpane
+	Parse.initialize("aCJKTtGB1GBe7BigaQuTiim9H7o3Gg6NAQrFu9xH", "B7ZpMdjyn7EhwyqGqovr7Wr2KzV2HtlhG7Te5YjJ");
+	
 	console.log("inside");
 	document.getElementById("username").innerHTML = "Hello " + Parse.User.current().get("firstname") + " " + Parse.User.current().get("lastname");
+	if(Parse.User.current().get("bio") != undefined){
+		document.getElementById("userbio").innerHTML = Parse.User.current().get("bio");
+	}
 
 }
+
+function save(){
+	Parse.initialize("aCJKTtGB1GBe7BigaQuTiim9H7o3Gg6NAQrFu9xH", "B7ZpMdjyn7EhwyqGqovr7Wr2KzV2HtlhG7Te5YjJ");
+	
+	Parse.User.current().set("bio", document.getElementById("userbio").innerHTML);
+	Parse.User.current().set("firstname", Parse.User.current().get("firstname"));
+	Parse.User.current().set("lastname", Parse.User.current().get("lastname"));
+	Parse.User.current().set("username", Parse.User.current().get("username"));
+	Parse.User.current().save(null, {
+		success: function(user){
+			console.log(Parse.User.current().get("username"));
+
+		},
+		error: function(error) {
+			console.log("Information failed to update: " + error.code + " " + error.message);
+		}
+	});
+
+
+}
+
+
+
+
