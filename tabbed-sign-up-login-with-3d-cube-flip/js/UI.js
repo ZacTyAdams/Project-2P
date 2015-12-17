@@ -66,3 +66,17 @@ document.getElementById('link-ten').addEventListener('click', function () {
 
 
 show(document.getElementById('one'));
+
+function readURL(input) {
+  console.log("asdfasdf");
+  if (input.files && input.files[0]) {
+    var reader = new FileReader();
+
+    reader.onload = function (e) {
+      document.getElementById('blah')
+      .src = e.target.result;
+    };
+
+    reader.readAsDataURL(input.files[0]);
+  }
+}
