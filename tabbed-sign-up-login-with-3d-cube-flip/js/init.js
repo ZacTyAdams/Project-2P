@@ -34,3 +34,13 @@ function signUp(){
 		}
 	});
 }
+
+function tester(){
+	console.log(Parse.User.current().get("firstname"));
+}
+
+function loader(){ //pulling saved user data into userpane
+	console.log("inside");
+	document.getElementById("username").innerHTML = "Hello " + Parse.User.current().get("firstname") + " " + Parse.User.current().get("lastname");
+
+}

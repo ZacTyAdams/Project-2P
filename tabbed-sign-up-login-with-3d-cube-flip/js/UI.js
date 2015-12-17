@@ -29,7 +29,7 @@ document.getElementById('link-three').addEventListener('click', function () {
   show(document.getElementById('three'));
 }, false);
 
-document.getElementById('link-four').addEventListener('click', function () {
+/*document.getElementById('link-four').addEventListener('click', function () {
   hideAll();
   show(document.getElementById('four'));
 }, false);
@@ -37,7 +37,7 @@ document.getElementById('link-four').addEventListener('click', function () {
 document.getElementById('link-five').addEventListener('click', function () {
   hideAll();
   show(document.getElementById('five'));
-}, false);
+}, false);*/
 
 document.getElementById('link-six').addEventListener('click', function () {
   hideAll();
