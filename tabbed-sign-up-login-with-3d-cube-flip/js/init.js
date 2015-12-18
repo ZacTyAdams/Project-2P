@@ -63,7 +63,6 @@ function loader(){ //pulling saved user data into userpane
 function save(){
 	Parse.initialize("aCJKTtGB1GBe7BigaQuTiim9H7o3Gg6NAQrFu9xH", "B7ZpMdjyn7EhwyqGqovr7Wr2KzV2HtlhG7Te5YjJ");
 	
-	Parse.User.current().set("profilePic", document.getElementById("blah").src);
 	Parse.User.current().set("bio", document.getElementById("userbio").innerHTML);
 	Parse.User.current().set("firstname", Parse.User.current().get("firstname"));
 	Parse.User.current().set("lastname", Parse.User.current().get("lastname"));
@@ -77,8 +76,30 @@ function save(){
 			console.log("Information failed to update: " + error.code + " " + error.message);
 		}
 	});
+}
 
+function sandbox(){
+	console.log(document.getElementById("file-input").files[0]);
+	var parseFile = new Parse.File("thing", document.getElementById("file-input").files[0]);
+	parseFile.save().then(function(parseFile){
+		var url = parseFile.url();
+		Parse.User.current().set("profilePic", url);
+		Parse.User.current().set("bio", document.getElementById("userbio").innerHTML);
+		Parse.User.current().set("firstname", Parse.User.current().get("firstname"));
+		Parse.User.current().set("lastname", Parse.User.current().get("lastname"));
+		Parse.User.current().set("username", Parse.User.current().get("username"));
+		Parse.User.current().save(null, {
+		success: function(user){
+			console.log("profile pic saved successfully " + user.get("profilePic"));
+			document.getElementById("testerimage").src = user.get("profilePic");
 
+		},
+		error: function(error) {
+			console.log("Information failed to update: " + error.code + " " + error.message);
+		}
+	});
+
+	});
 }
 
 
