@@ -72,7 +72,7 @@ function readURL(input) {
   console.log("asdfasdf");
   if (input.files && input.files[0]) {
     var reader = new FileReader();
-    console.log(input.src);
+    
     reader.onload = function (e) {
       document.getElementById('blah')
       .src = e.target.result;

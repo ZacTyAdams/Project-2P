@@ -57,6 +57,9 @@ function loader(){ //pulling saved user data into userpane
 		document.getElementById('blah').src = Parse.User.current().get("profilePic"); 
 		console.log("pulling pic");
 	}
+	if(Parse.User.current().get("tags") != undefined){
+		document.getElementById("tagfield").innerHTML = Parse.User.current().get("tags");
+	}
 
 }
 
@@ -70,6 +73,7 @@ function save(){
 			Parse.User.current().set("firstname", Parse.User.current().get("firstname"));
 			Parse.User.current().set("lastname", Parse.User.current().get("lastname"));
 			Parse.User.current().set("username", Parse.User.current().get("username"));
+			Parse.User.current().set("tags", document.getElementById("tagfield").innerHTML);
 			Parse.User.current().save(null, {
 				success: function(user){
 					console.log(Parse.User.current().get("username"));
@@ -102,8 +106,45 @@ function save(){
 	}
 }
 
+
+var array = [];
 function sandbox(){
-	
+	var tags = Parse.User.current().get("tags").split(" ");
+	var query = new Parse.Query(Parse.User);
+
+	for(var i = 0; i<tags.length; i++)
+	{
+		console.log(tags[i]);
+		query.contains("tags", tags[i]);
+		query.find({
+			success: function(result){
+				for(var x = 0; x<result.length; x++){
+					if(result[x].get("username") != Parse.User.current().get("username")){
+						console.log(result[x].get("username"));
+						var isPresent = false;
+						for(var y = 0; y<array.length; y++){
+							console.log("its in the for");
+							if(array[y] == result[x].get("username")){
+								isPresent = true;
+							}
+						}
+						if(!isPresent){
+							console.log("its in");
+							array.push(result[x].get("username"));
+						}
+					}
+				}
+			},
+			error: function(error){
+				console.log("nothingness");
+			}
+		});
+
+	}
+}
+
+function showarray(){
+	console.log(array);
 }
 
 
