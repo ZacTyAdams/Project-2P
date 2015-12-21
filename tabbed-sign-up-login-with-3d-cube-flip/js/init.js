@@ -109,6 +109,7 @@ function save(){
 
 var array = [];
 function sandbox(){
+	array = [];
 	var tags = Parse.User.current().get("tags").split(" ");
 	var query = new Parse.Query(Parse.User);
 
@@ -124,13 +125,16 @@ function sandbox(){
 						var isPresent = false;
 						for(var y = 0; y<array.length; y++){
 							console.log("its in the for");
-							if(array[y] == result[x].get("username")){
+							if(array[y].name == result[x].get("username")){
 								isPresent = true;
+								array[y].hits++; 
 							}
 						}
 						if(!isPresent){
 							console.log("its in");
-							array.push(result[x].get("username"));
+							var match = {name: result[x].get("username"), hits: 1};
+							console.log(match.name);
+							array.push(match);
 						}
 					}
 				}
@@ -143,8 +147,18 @@ function sandbox(){
 	}
 }
 
+function sandbox2(){
+	console.log("doing things");
+	var object = {name: "blah", hits: 1};
+	console.log(object);
+	array.push(object);
+}
+
 function showarray(){
-	console.log(array);
+	for(var x = 0; x < array.length; x++){
+		console.log("user: " + array[x].name + " " + "hits: " + array[x].hits);
+	}
+	//console.log(array[0].name);
 }
 
 
