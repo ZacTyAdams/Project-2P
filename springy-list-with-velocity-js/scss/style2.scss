@@ -1,0 +1,68 @@
+@import "bourbon";
+
+@import url(http://fonts.googleapis.com/css?family=Titillium+Web);
+
+body {
+  background: #eaeef3;
+  font-family: 'Titillium Web';
+}
+
+h1 {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 0px;
+  font-size: 20px;
+}
+
+.list {
+  width: 500px;
+  position: relative;
+  margin: 0 auto;
+  height: 300px;
+  top: 0px;
+}
+
+ul, li {
+  padding: 0;
+  margin: 0;
+}
+
+ul {
+  list-style: none;
+  top: 120px;
+  position: relative;
+}
+
+li {
+  display: block;
+  width: 10px;
+  height: 10px;
+  background: #263241;
+  position: absolute;
+  border-radius: 10px;
+  border: 3px #eaeef3 solid;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.line {
+	overflow: hidden;
+  width: 0px;
+  height: 1px;
+  top: 127px;
+  position: absolute;
+  background: #ddd;
+}
+
+.image {
+  width: 60px;
+  height: 60px;
+  border-radius: 30px;
+  background: #ddd;
+  position: absolute;
+  top: -62px;
+  left: -26px;
+  background-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/53148/tim1.png');
+  background-size: cover;
+}
+

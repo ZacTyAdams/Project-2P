@@ -60,6 +60,7 @@ function loader(){ //pulling saved user data into userpane
 	if(Parse.User.current().get("tags") != undefined){
 		document.getElementById("tagfield").innerHTML = Parse.User.current().get("tags");
 	}
+	matchFinder();
 
 }
 
@@ -106,10 +107,9 @@ function save(){
 	}
 }
 
-
 var array = [];
-function sandbox(){
-	array = [];
+function matchFinder(){
+	array =[];
 	var tags = Parse.User.current().get("tags").split(" ");
 	var query = new Parse.Query(Parse.User);
 
@@ -132,7 +132,7 @@ function sandbox(){
 						}
 						if(!isPresent){
 							console.log("its in");
-							var match = {name: result[x].get("username"), hits: 1};
+							var match = {name: result[x].get("username"), hits: 1, pic: result[x].get("profilePic")};
 							console.log(match.name);
 							array.push(match);
 						}
@@ -147,18 +147,27 @@ function sandbox(){
 	}
 }
 
-function sandbox2(){
-	console.log("doing things");
-	var object = {name: "blah", hits: 1};
-	console.log(object);
-	array.push(object);
-}
+function showMatches(){
 
-function showarray(){
+	while(document.getElementById("matchlist").firstChild){
+		document.getElementById("matchlist").removeChild(document.getElementById("matchlist").firstChild);
+	}
+	array.sort(function(a, b){return b.hits-a.hits});
+
 	for(var x = 0; x < array.length; x++){
 		console.log("user: " + array[x].name + " " + "hits: " + array[x].hits);
+		var matchPic = document.createElement("IMG");
+		matchPic.setAttribute('src', array[x].pic);
+		var match = document.createElement("LI");
+		var t = document.createTextNode("user: " + array[x].name + " " + "hits: " + array[x].hits);
+		match.appendChild(matchPic);
+		match.appendChild(t);
+		document.getElementById("matchlist").appendChild(match);
 	}
-	//console.log(array[0].name);
+}
+
+function sandbox(){
+	
 }
 
 
