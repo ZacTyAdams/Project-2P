@@ -158,7 +158,10 @@ function showMatches(){
 		console.log("user: " + array[x].name + " " + "hits: " + array[x].hits);
 		var matchPic = document.createElement("IMG");
 		matchPic.setAttribute('src', array[x].pic);
+		matchPic.style.width = "25%";
+		matchPic.style.height = "25%";
 		var match = document.createElement("LI");
+		match.setAttribute('onclick', "likePerson(" + x + ");");
 		var t = document.createTextNode("user: " + array[x].name + " " + "hits: " + array[x].hits);
 		match.appendChild(matchPic);
 		match.appendChild(t);
@@ -166,8 +169,36 @@ function showMatches(){
 	}
 }
 
+function likePerson(ele){
+	if(Parse.User.current().get("liked") == undefined){
+		Parse.User.current().set("liked", array[ele].name);
+		save();
+		console.log("in the conditional");
+	}
+	else{
+		console.log("in other statement");
+		var temp = Parse.User.current().get("liked").split(" ");
+		var isPresent = false;
+		for(var i = 0; i<temp.length; i++){
+			if(array[ele].name == temp[i]){
+				isPresent = true;
+			}
+		}
+		if(!isPresent){
+			Parse.User.current().set("liked", Parse.User.current().get("liked") + " " + array[ele].name + " ");
+			save();
+		}
+	}
+
+	console.log(array[ele].name);
+}
+
 function sandbox(){
-	
+	var matches = Parse.User.current().get("liked").split(" ");
+	var query = new Parse.Query(Parse.User);
+	for(var i = 0; i<matches.length; i++){
+		
+	}
 }
 
 
