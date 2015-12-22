@@ -60,6 +60,22 @@ function loader(){ //pulling saved user data into userpane
 	if(Parse.User.current().get("tags") != undefined){
 		document.getElementById("tagfield").innerHTML = Parse.User.current().get("tags");
 	}
+	if(Parse.User.current().get("matched") != undefined){
+		var temp = Parse.User.current().get("matched").split(" ");
+		console.log(temp);
+		for(var i = 0; i<temp.length; i++){
+			var matched = document.createElement("LI");
+			var matchedname = document.createElement("DIV");
+			var matchednumber = document.createElement("DIV");
+			var t = document.createTextNode(temp[i]);
+			var q = document.createTextNode(i+1);
+			matchedname.appendChild(t);
+			matchednumber.appendChild(q);
+			matched.appendChild(matchednumber);
+			matched.appendChild(matchedname);
+			document.getElementById("matchedList").appendChild(matched);
+		}
+	}
 	matchFinder();
 
 }
@@ -115,25 +131,25 @@ function matchFinder(){
 
 	for(var i = 0; i<tags.length; i++)
 	{
-		console.log(tags[i]);
+		//console.log(tags[i]);
 		query.contains("tags", tags[i]);
 		query.find({
 			success: function(result){
 				for(var x = 0; x<result.length; x++){
 					if(result[x].get("username") != Parse.User.current().get("username")){
-						console.log(result[x].get("username"));
+						//console.log(result[x].get("username"));
 						var isPresent = false;
 						for(var y = 0; y<array.length; y++){
-							console.log("its in the for");
+							//console.log("its in the for");
 							if(array[y].name == result[x].get("username")){
 								isPresent = true;
 								array[y].hits++; 
 							}
 						}
 						if(!isPresent){
-							console.log("its in");
+							//console.log("its in");
 							var match = {name: result[x].get("username"), hits: 1, pic: result[x].get("profilePic")};
-							console.log(match.name);
+							//console.log(match.name);
 							array.push(match);
 						}
 					}
@@ -171,7 +187,7 @@ function showMatches(){
 
 function likePerson(ele){
 	if(Parse.User.current().get("liked") == undefined){
-		Parse.User.current().set("liked", array[ele].name);
+		Parse.User.current().set("liked", array[ele].name + " ");
 		save();
 		console.log("in the conditional");
 	}
@@ -185,7 +201,7 @@ function likePerson(ele){
 			}
 		}
 		if(!isPresent){
-			Parse.User.current().set("liked", Parse.User.current().get("liked") + " " + array[ele].name + " ");
+			Parse.User.current().set("liked", Parse.User.current().get("liked") + array[ele].name + " ");
 			save();
 		}
 	}
@@ -196,9 +212,43 @@ function likePerson(ele){
 function sandbox(){
 	var matches = Parse.User.current().get("liked").split(" ");
 	var query = new Parse.Query(Parse.User);
-	for(var i = 0; i<matches.length; i++){
-		
-	}
+	query.contains("liked", Parse.User.current().get("username"));
+	query.find({
+		success: function(result){
+			for(var i = 0; i<result.length; i++){
+				for(var x = 0; x<matches.length; x++){
+					if(result[i].get("username") == matches[x]){
+						console.log("Match found: " + matches[x]);
+						Parse.User.current().set("liked", Parse.User.current().get("liked"));
+						if(Parse.User.current().get("matched") == undefined){
+							Parse.User.current().set("matched", matches[x] + " ");
+							save();
+						}
+						else{
+							var temp = Parse.User.current().get("matched").split(" ");
+							var isPresent = false;
+							for(var y = 0; y<temp.length; y++){
+								if(temp[y] == matches[x]){
+									isPresent = true;
+								}
+							}
+							if(!isPresent){
+								Parse.User.current().set("matched", Parse.User.current().get("matched") + " ");
+								save();
+							}
+						}
+					}
+				}
+			}
+			//console.log(result[0].get("username"));
+		},
+		error: function(error){
+			console.log("did not find anything");
+		}
+	});
+	//for(var i = 0; i<matches.length; i++){
+	//	console.log(matches[i]);
+	//}
 }
 
 

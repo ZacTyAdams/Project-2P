@@ -39,7 +39,7 @@ document.getElementById('link-five').addEventListener('click', function () {
   show(document.getElementById('five'));
 }, false);*/
 
-document.getElementById('link-six').addEventListener('click', function () {
+/*document.getElementById('link-six').addEventListener('click', function () {
   hideAll();
   show(document.getElementById('six'));
 }, false);
@@ -62,7 +62,7 @@ document.getElementById('link-nine').addEventListener('click', function () {
 document.getElementById('link-ten').addEventListener('click', function () {
   hideAll();
   show(document.getElementById('ten'));
-}, false);
+}, false);*/
 
 
 show(document.getElementById('one'));
