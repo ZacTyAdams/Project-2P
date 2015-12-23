@@ -123,44 +123,39 @@ function save(){
 	}
 }
 
-var array = [];
 function matchFinder(){
-	array =[];
-	var tags = Parse.User.current().get("tags").split(" ");
 	var query = new Parse.Query(Parse.User);
-
-	for(var i = 0; i<tags.length; i++)
-	{
-		//console.log(tags[i]);
-		query.contains("tags", tags[i]);
-		query.find({
-			success: function(result){
-				for(var x = 0; x<result.length; x++){
-					if(result[x].get("username") != Parse.User.current().get("username")){
-						//console.log(result[x].get("username"));
-						var isPresent = false;
-						for(var y = 0; y<array.length; y++){
-							//console.log("its in the for");
-							if(array[y].name == result[x].get("username")){
-								isPresent = true;
-								array[y].hits++; 
-							}
+	
+	query.exists("userprofile");
+	query.find({
+		success: function(result){
+			//var possiblematch = [];
+			for(x in result){
+				if(result[x].get("userprofile").uname != userProfile.uname){
+					var alreadymatched = false;
+					var compare = userProfile.tags.concat(result[x].get("userprofile").tags).sort();
+					for(var y = 0; y<compare.length; y++){
+						//console.log(compare[y] + " " + compare[y+1]);
+						if(compare[y] == compare[y+1] && !alreadymatched){
+							temp = {prof: result[x].get("userprofile"), hits: 1};
+							alreadymatched = true;
 						}
-						if(!isPresent){
-							//console.log("its in");
-							var match = {name: result[x].get("username"), hits: 1, pic: result[x].get("profilePic")};
-							//console.log(match.name);
-							array.push(match);
+						else if(compare[y] == compare[y+1] && alreadymatched){
+							temp.hits++;
 						}
 					}
+					if(alreadymatched){
+						matches.push(temp);
+					}
 				}
-			},
-			error: function(error){
-				console.log("nothingness");
 			}
-		});
-
-	}
+			console.log(matches);
+			showMatches();
+		},
+		error: function(error){
+			console.log("nothingness");
+			}
+	});
 }
 
 function showMatches(){
@@ -168,17 +163,17 @@ function showMatches(){
 	while(document.getElementById("matchlist").firstChild){
 		document.getElementById("matchlist").removeChild(document.getElementById("matchlist").firstChild);
 	}
-	array.sort(function(a, b){return b.hits-a.hits});
+	matches.sort(function(a, b){return b.hits-a.hits});
 
-	for(var x = 0; x < array.length; x++){
-		console.log("user: " + array[x].name + " " + "hits: " + array[x].hits);
+	for(var x = 0; x < matches.length; x++){
+		console.log("user: " + matches[x].prof.uname + " " + "hits: " + matches[x].hits);
 		var matchPic = document.createElement("IMG");
-		matchPic.setAttribute('src', array[x].pic);
+		matchPic.setAttribute('src', matches[x].prof.pic);
 		matchPic.style.width = "25%";
 		matchPic.style.height = "25%";
 		var match = document.createElement("LI");
-		match.setAttribute('onclick', "likePerson(" + x + ");");
-		var t = document.createTextNode("user: " + array[x].name + " " + "hits: " + array[x].hits);
+		match.setAttribute('onclick', "sandbox(" + x + ");");
+		var t = document.createTextNode("user: " + matches[x].prof.uname + " " + "hits: " + matches[x].hits);
 		match.appendChild(matchPic);
 		match.appendChild(t);
 		document.getElementById("matchlist").appendChild(match);
@@ -186,8 +181,9 @@ function showMatches(){
 }
 
 function likePerson(ele){
+	var liked = [];
 	if(Parse.User.current().get("liked") == undefined || Parse.User.current().get("liked") == ""){
-		Parse.User.current().set("liked", array[ele].name);
+		Parse.User.current().set("liked", matches[ele].prof);
 		save();
 		console.log("in the conditional");
 	}
@@ -251,44 +247,50 @@ function checkforMatched(){
 	//}
 }
 
-function sandbox(){
-	//array =[];
-	//var tags = Parse.User.current().get("tags").split(" ");
-	var query = new Parse.Query(Parse.User);
-	var matches = [];
+var matches = [];
 
-	//for(var i = 0; i<tags.length; i++)
-	//{
-		//console.log(tags[i]);
-		query.exists("userprofile");
-		query.find({
-			success: function(result){
-				var possiblematch = [];
-				for(x in result){
-					if(result[x].get("userprofile").uname != userProfile.uname){
-						var alreadymatched = false;
-						var compare = userProfile.tags.concat(result[x].get("userprofile").tags).sort();
-						for(var y = 0; y<compare.length; y++){
-							//console.log(compare[y] + " " + compare[y+1]);
-							if(compare[y] == compare[y+1] && !alreadymatched){
-								temp = {prof: result[x].get("userprofile"), hits: 1};
-								alreadymatched = true;
-							}
-							else if(compare[y] == compare[y+1] && alreadymatched){
-								temp.hits++;
-							}
-						}
-						if(alreadymatched){
-							matches.push(temp);
-						}
-					}
-				}
-				console.log(matches);
-			},
-			error: function(error){
-				console.log("nothingness");
-				}
-		});
+function sandbox(ele){
+	console.log(userProfile.liked);
+	if(userProfile.liked == undefined){
+		console.log("this may work");
+		userProfile.liked = [];
+		userProfile.liked.push(matches[ele].prof);
+	}
+	else{
+		var isPresent = false;
+		for(x in userProfile.liked){
+			if(userProfile.liked[x].uname == matches[ele].prof.uname){
+				isPresent = true;
+				console.log("you already like this person!");
+			}
+		}
+		if(!isPresent){
+			userProfile.liked.push(matches[ele].prof);
+		}
+	}
+	save();
+	console.log(userProfile)
+	/*if(Parse.User.current().get("liked") == undefined || Parse.User.current().get("liked") == ""){
+		Parse.User.current().set("liked", matches[ele].prof);
+		save();
+		console.log("in the conditional");
+	}
+	else{
+		console.log("in other statement");
+		var temp = Parse.User.current().get("liked").split(" ");
+		var isPresent = false;
+		for(var i = 0; i<temp.length; i++){
+			if(array[ele].name == temp[i]){
+				isPresent = true;
+			}
+		}
+		if(!isPresent){
+			Parse.User.current().set("liked", Parse.User.current().get("liked") + " " + array[ele].name);
+			save();
+		}
+	}
+
+	console.log(array[ele].name);*/
 }
 
 
