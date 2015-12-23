@@ -283,38 +283,12 @@ function sandbox(){
 						}
 					}
 				}
-				//console.log(possiblematch);
-				
 				console.log(matches);
-
-
-				/*for(var x = 0; x<result.length; x++){
-					if(result[x].get("username") != Parse.User.current().get("username")){
-						//console.log(result[x].get("username"));
-						var isPresent = false;
-						for(var y = 0; y<array.length; y++){
-							//console.log("its in the for");
-							if(array[y].name == result[x].get("username")){
-								isPresent = true;
-								array[y].hits++; 
-							}
-						}
-						if(!isPresent){
-							//console.log("its in");
-							var match = {name: result[x].get("username"), hits: 1, pic: result[x].get("profilePic")};
-							//console.log(match.name);
-							array.push(match);
-						}
-					}
-				}*/
 			},
 			error: function(error){
 				console.log("nothingness");
-			}
+				}
 		});
-
-	//}
-
 }
 
 
