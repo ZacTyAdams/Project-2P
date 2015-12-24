@@ -72,7 +72,7 @@ function loader(){ //pulling saved user data into userpane
 			document.getElementById("matchedList").appendChild(matched);
 		}
 	}
-	//matchFinder();
+	matchFinder();
 
 }
 
@@ -150,7 +150,6 @@ function matchFinder(){
 				}
 			}
 			console.log(matches);
-			showMatches();
 		},
 		error: function(error){
 			console.log("nothingness");
@@ -172,7 +171,7 @@ function showMatches(){
 		matchPic.style.width = "25%";
 		matchPic.style.height = "25%";
 		var match = document.createElement("LI");
-		match.setAttribute('onclick', "sandbox(" + x + ");");
+		match.setAttribute('onclick', "likePerson(" + x + ");");
 		var t = document.createTextNode("user: " + matches[x].prof.uname + " " + "hits: " + matches[x].hits);
 		match.appendChild(matchPic);
 		match.appendChild(t);
@@ -181,28 +180,27 @@ function showMatches(){
 }
 
 function likePerson(ele){
-	var liked = [];
-	if(Parse.User.current().get("liked") == undefined || Parse.User.current().get("liked") == ""){
-		Parse.User.current().set("liked", matches[ele].prof);
-		save();
-		console.log("in the conditional");
+	console.log(userProfile.liked);
+	if(userProfile.liked == undefined){
+		console.log("this may work");
+		userProfile.liked = [];
+		userProfile.liked.push(matches[ele].prof);
 	}
 	else{
-		console.log("in other statement");
-		var temp = Parse.User.current().get("liked").split(" ");
 		var isPresent = false;
-		for(var i = 0; i<temp.length; i++){
-			if(array[ele].name == temp[i]){
+		for(x in userProfile.liked){
+			if(userProfile.liked[x].uname == matches[ele].prof.uname){
 				isPresent = true;
+				console.log("you already like this person!");
 			}
 		}
 		if(!isPresent){
-			Parse.User.current().set("liked", Parse.User.current().get("liked") + " " + array[ele].name);
-			save();
+			userProfile.liked.push(matches[ele].prof);
 		}
-	}
 
-	console.log(array[ele].name);
+	}
+	save();
+	console.log(userProfile);
 }
 
 function checkforMatched(){
@@ -250,47 +248,45 @@ function checkforMatched(){
 var matches = [];
 
 function sandbox(ele){
-	console.log(userProfile.liked);
-	if(userProfile.liked == undefined){
-		console.log("this may work");
-		userProfile.liked = [];
-		userProfile.liked.push(matches[ele].prof);
-	}
-	else{
-		var isPresent = false;
-		for(x in userProfile.liked){
-			if(userProfile.liked[x].uname == matches[ele].prof.uname){
-				isPresent = true;
-				console.log("you already like this person!");
+	var matches = Parse.User.current().get("liked").split(" ");
+	var query = new Parse.Query(Parse.User);
+	query.contains("liked", Parse.User.current().get("username"));
+	query.find({
+		success: function(result){
+			for(var i = 0; i<result.length; i++){
+				for(var x = 0; x<matches.length; x++){
+					if(result[i].get("username") == matches[x]){
+						console.log("Match found: " + matches[x]);
+						Parse.User.current().set("liked", Parse.User.current().get("liked"));
+						if(Parse.User.current().get("matched") == undefined || Parse.User.current().get("matched") == ""){
+							Parse.User.current().set("matched", matches[x]);
+							save();
+						}
+						else{
+							var temp = Parse.User.current().get("matched").split(" ");
+							var isPresent = false;
+							for(var y = 0; y<temp.length; y++){
+								if(temp[y] == matches[x]){
+									isPresent = true;
+								}
+							}
+							if(!isPresent){
+								Parse.User.current().set("matched", Parse.User.current().get("matched"));
+								save();
+							}
+						}
+					}
+				}
 			}
+			//console.log(result[0].get("username"));
+		},
+		error: function(error){
+			console.log("did not find anything");
 		}
-		if(!isPresent){
-			userProfile.liked.push(matches[ele].prof);
-		}
-	}
-	save();
-	console.log(userProfile)
-	/*if(Parse.User.current().get("liked") == undefined || Parse.User.current().get("liked") == ""){
-		Parse.User.current().set("liked", matches[ele].prof);
-		save();
-		console.log("in the conditional");
-	}
-	else{
-		console.log("in other statement");
-		var temp = Parse.User.current().get("liked").split(" ");
-		var isPresent = false;
-		for(var i = 0; i<temp.length; i++){
-			if(array[ele].name == temp[i]){
-				isPresent = true;
-			}
-		}
-		if(!isPresent){
-			Parse.User.current().set("liked", Parse.User.current().get("liked") + " " + array[ele].name);
-			save();
-		}
-	}
-
-	console.log(array[ele].name);*/
+	});
+	//for(var i = 0; i<matches.length; i++){
+	//	console.log(matches[i]);
+	//}
 }
 
 
